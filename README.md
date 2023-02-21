@@ -17,7 +17,6 @@ Example wrong input
 
 
 
-
 2. if current coordinates do not exist. An error occurs
 
 
@@ -33,11 +32,18 @@ Example correct input.
 ![image](https://user-images.githubusercontent.com/116108850/220430034-859cda33-2929-4cb4-b49c-70ef661d47cb.png)
 
 
-![image](https://user-images.githubusercontent.com/116108850/220433280-d2cc5d2a-9da2-43fb-a645-f2138634e018.png)
+![image](https://user-images.githubusercontent.com/116108850/220451837-a00565a4-54b0-47db-8de3-be4539a339a1.png)
 
 
-![image](https://user-images.githubusercontent.com/116108850/220433077-2d49d8e6-c1a4-470c-b669-15b769bcd676.png)
+Map contains two layers
+1. Your location
 
+![image](https://user-images.githubusercontent.com/116108850/220452064-3775de6c-6cd8-4b72-9179-fd0992e4ee3e.png)
+
+
+2. Film`s location
+
+![image](https://user-images.githubusercontent.com/116108850/220452214-c4029552-6b32-423f-9e8d-7048898ba7c2.png)
 
 
 
@@ -46,5 +52,4 @@ Example correct input.
 1. Geopy - geocoding web services.
 2. Folium - library for creating map.
 3. Haversine - count distance from one place to another.
-
 
