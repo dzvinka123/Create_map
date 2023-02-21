@@ -20,16 +20,18 @@ latitude = args.latitude
 longtitude = args.longtitude
 
 def check_input(path, year, latitude, longtitude):
-    if os.path.isfile(path) and 1860 < year < 2023 and longtitude <= 180 and longtitude >= - 180 and \
-        latitude <= 90 and longtitude >= - 90:
+    """
+    Function for checking input. If input is incorrect return False.
+    """
+    if os.path.isfile(path) and 1860 < year < 2023 and longtitude <= 180 and longtitude <= - 180 and \
+        latitude <= 90 and latitude <= - 90:
         return True
     else:
         return False
 
 def read_file(path: str, year: int) -> dict:
     """
-    Function for reading txt file and convert info into dictionary
-    Key - year, value - location
+    Function for reading txt file, finding needed year in this file and getting list of location.
     """
     with open(path, "r", encoding="utf-8") as file:
         dictionary = []
@@ -41,9 +43,10 @@ def read_file(path: str, year: int) -> dict:
                     dictionary.append(element.split("\t")[-1])
     return dictionary
 
-# print(read_file("location.list.txt", 2016))
-
 def get_location(dictionary):
+    """
+    Function for converting location into coordinates (latitude and longtitude)
+    """
     need_location = []
     geolocator = Nominatim(user_agent="dell")
     for point in dictionary:
@@ -54,19 +57,20 @@ def get_location(dictionary):
                 break
     return need_location
 
-# print(get_location(read_file("location.list.txt", 2016)))
-
 def get_haversine(location, people_place):
+    """
+    Function for count distance between film`s location and user location.
+    """
     distance = [(element, haversine(element[1:], people_place)) for element in location]
     distance = sorted(distance, reverse= False, key=lambda item: item[1])[:10]
     map_location = [item[0] for item in distance]
     return map_location
-# print(get_haversine(get_location(read_file("location.list.txt", 2016)),(47.8507859, 35.1182867)))
 
 def create_map(cordinate_near, latitude, longtitude):
-
-    map = folium.Map(tiles="Cartodb Positron", location=[latitude, longtitude], zoom_start=5)
-
+    """
+    Function for creating map, which shows user`s location and ten nearest film`s location.
+    """
+    map = folium.Map(tiles="Cartodb Positron", location=[latitude, longtitude], zoom_start=3)
     feature_group1 = folium.FeatureGroup(name='my_location')
     feature_group1.add_child(folium.Marker(location= [latitude, longtitude], popup= "HOME", tooltip = "Click",
                                     icon=folium.Icon(color='black', icon='home')))
@@ -74,7 +78,7 @@ def create_map(cordinate_near, latitude, longtitude):
     feature_group2 = folium.FeatureGroup(name='Film_location')
     for item in cordinate_near: # rewrite into needed list
         feature_group2.add_child(folium.Marker(location=[item[1], item[2]], popup= item[0], tooltip = "Click",
-                                    icon=folium.Icon(color='lightblack', icon='film')))
+                                    icon=folium.Icon(color='darkpurple', icon='film')))
     map.add_child(feature_group1)
     map.add_child(feature_group2)
 
@@ -83,12 +87,12 @@ def create_map(cordinate_near, latitude, longtitude):
     folium.LayerControl().add_to(map)
     plugins.MiniMap(tile_layer="Stamen Toner").add_to(map)
     map.save("Map_.html")
-print(create_map([('Fishers Island', , -72.0239626), (' Hollywood', 34.0980031, -118.329523), ('Los Angeles', 34.0536909, -118.242766), ('England', 52.5310214, -1.2649062), ('Liberia', 5.7499721, -9.3658524), ('Dallas', 32.7762719, -96.7968559), ('Uruapan', 19.4060961, -102.03430719292024), ('Liège', 50.6450944, 5.5736112)], 47.8507859, 35.1182867)))
-
-
-
 
 def main(path, year, latitude, longtitude):
+    """
+    Main function which contains all function in this module. If user`s input is correct return map.
+    Otherwise raise ValueError and print Incorrect input
+    """
     if check_input(path, year, latitude, longtitude):
         location = read_file(path, year)
         cordinat_near = get_location(location)
@@ -98,6 +102,4 @@ def main(path, year, latitude, longtitude):
     else:
         raise ValueError("Please enter correct input")
 
-# main(path, year, latitude, longtitude)
-
-# print(create_map([('Fishers Island', , -72.0239626), (' Hollywood', 34.0980031, -118.329523), ('Los Angeles', 34.0536909, -118.242766), ('England', 52.5310214, -1.2649062), ('Liberia', 5.7499721, -9.3658524), ('Dallas', 32.7762719, -96.7968559), ('Uruapan', 19.4060961, -102.03430719292024), ('Liège', 50.6450944, 5.5736112)], 47.8507859, 35.1182867))
+main(path, year, latitude, longtitude)
