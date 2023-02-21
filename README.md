@@ -17,7 +17,6 @@ Example wrong input
 
 
 
-
 2. if current coordinates do not exist. An error occurs
 
 
