@@ -1,4 +1,4 @@
-# Create_map - name project
+# Create_map
 
 
 # About Project
